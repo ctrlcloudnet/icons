@@ -19,8 +19,11 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc && cp src/icons/*.tsx dist/",
+    "build": "tsc && tsx build-icons.ts && cp src/index.ts dist/",
     "prepublishOnly": "npm run build",
     "lint": "eslint src --ext .ts,.tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
@@ -31,11 +34,17 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-
   "exports": {
-    ".": "./dist/index.js",
-    "./AmazonEC2Icon": "./dist/AmazonEC2Icon.jsx",
-    "./AmazonSimpleStorageService": "./dist/AmazonSimpleStorageService.jsx"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "require": "./dist/*.cjs"
+    }
   },
   "husky": {
     "hooks": {
@@ -68,6 +77,11 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^9.0.4",
     "@semantic-release/npm": "^12.0.1",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-prettier": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
+    "@svgr/rollup": "^8.1.0",
     "@types/node": "^22.14.1",
     "@types/react": "^18.2.56",
     "@typescript-eslint/eslint-plugin": "^8.30.1",
@@ -81,6 +95,7 @@
     "lint-staged": "^15.5.1",
     "prettier": "^3.5.3",
     "semantic-release": "^24.2.3",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
