@@ -1,0 +1,89 @@
+{
+  "name": "icons",
+  "version": "1.0.0",
+  "sideEffects": false,
+  "description": "The set of icons from CtrlCloud for DevOps projects",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ctrlcloudnet/icons.git"
+  },
+  "keywords": [
+    "icons",
+    "svg",
+    "react"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "build": "tsc && cp src/icons/*.tsx dist/",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "prepare": "husky install",
+    "release": "semantic-release",
+    "commit": "git-cz"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+
+  "exports": {
+    ".": "./dist/index.js",
+    "./AmazonEC2Icon": "./dist/AmazonEC2Icon.jsx",
+    "./AmazonSimpleStorageService": "./dist/AmazonSimpleStorageService.jsx"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "author": "Your Name <your.email@ctrlcloud.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ctrlcloudnet/icons/issues"
+  },
+  "homepage": "https://github.com/ctrlcloudnet/icons#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.0.4",
+    "@semantic-release/npm": "^12.0.1",
+    "@types/node": "^22.14.1",
+    "@types/react": "^18.2.56",
+    "@typescript-eslint/eslint-plugin": "^8.30.1",
+    "@typescript-eslint/parser": "^8.30.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.25.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
+    "prettier": "^3.5.3",
+    "semantic-release": "^24.2.3",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}
