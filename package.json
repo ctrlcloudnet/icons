@@ -19,11 +19,8 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "build": "tsc && tsx build-icons.ts && cp src/index.ts dist/",
+    "build": "tsx build-icons.ts dist/",
     "prepublishOnly": "npm run build",
     "lint": "eslint src --ext .ts,.tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
@@ -32,18 +29,20 @@
     "commit": "git-cz"
   },
   "main": "dist/index.js",
-  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./*": {
-      "types": "./dist/*.d.ts",
       "import": "./dist/*.js",
-      "require": "./dist/*.cjs"
+      "require": "./dist/*.js",
+      "types": "./dist/*.d.ts"
     }
   },
   "husky": {
@@ -66,8 +65,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "author": "Your Name <your.email@ctrlcloud.net>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ctrlcloudnet/icons/issues"
   },
@@ -99,6 +97,6 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "react": "^18.0.0"
+    "react": ">=18.0.0 || ^19.0.0"
   }
 }
