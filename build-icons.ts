@@ -6,14 +6,14 @@ const ICONS_DIR = path.join(process.cwd(), 'src/icons');
 const OUT_DIR = path.join(process.cwd(), 'dist/icons');
 const OUT_DIR_INDEX = path.join(process.cwd(), 'dist');
 
-interface IconExport {
+type IIconExport = {
   componentName: string;
   importPath: string;
 }
 
-async function processDirectory(dir: string, relativePath = ''): Promise<IconExport[]> {
+async function processDirectory(dir: string, relativePath = ''): Promise<IIconExport[]> {
   const files = await fs.readdir(dir);
-  let allExports: IconExport[] = [];
+  let allExports: IIconExport[] = [];
 
   for (const file of files) {
     const fullPath = path.join(dir, file);
@@ -36,17 +36,58 @@ async function processDirectory(dir: string, relativePath = ''): Promise<IconExp
           jsxRuntime: 'classic',
           expandProps: 'end',
           template: ({ componentName, jsx }, { tpl }) => tpl`
-            import React from 'react';
-      
-            const ${componentName} = (props) => ${jsx};
-      
-            export default ${componentName};
-          `
+          import React from 'react';
+        
+          const ${componentName} = ({
+            width = 40,
+            height = 40,
+            colors = [],
+            colorsByHex = {},
+            ...props
+          }) => {
+            const originalChildren = ${jsx}.props.children;
+            
+            const processChildren = (children) => {
+              return React.Children.map(children, (child, index) => {
+                if (!React.isValidElement(child)) return child;
+                
+                let newChild = child;
+                
+                if (child.props.fill) {
+                  const overrideFill = colorsByHex[child.props.fill] || colors[index] || child.props.fill;
+                  newChild = React.cloneElement(child, { fill: overrideFill });
+                }
+                
+                if (child.props.children) {
+                  const processedChildren = processChildren(child.props.children);
+                  newChild = React.cloneElement(child, {}, processedChildren);
+                }
+                
+                return newChild;
+              });
+            };
+            
+            const processedChildren = processChildren(originalChildren);
+            
+            return (
+              <svg
+                {...${jsx}.props}
+                width={width}
+                height={height}
+                {...props}
+              >
+                {processedChildren}
+              </svg>
+            );
+          };
+        
+          export default ${componentName};
+        `
         },
         { componentName: pascalCaseName }
       );
-      
-      
+
+
       const outSubDir = path.join(OUT_DIR, relativePath);
       await fs.mkdir(outSubDir, { recursive: true });
 
@@ -55,8 +96,19 @@ async function processDirectory(dir: string, relativePath = ''): Promise<IconExp
         jsCode
       );
 
-      // Create corresponding .d.ts file
-      const dtsContent = `import * as React from 'react';\nimport type { SVGProps } from 'react';\ndeclare const ${pascalCaseName}: React.FC<SVGProps<SVGSVGElement>>;\nexport default ${pascalCaseName};`;
+      const dtsContent =
+        `import * as React from 'react';
+      import type { SVGProps } from 'react';
+      
+      type ICustomIconProps = SVGProps<SVGSVGElement> & {
+        colors?: string[];
+        colorsByHex?: Record<string, string>;
+        width?: number | string;
+        height?: number | string;
+      }
+      
+      declare const ${pascalCaseName}: React.FC<ICustomIconProps>;
+      export default ${pascalCaseName};`;
       await fs.writeFile(path.join(outSubDir, `${pascalCaseName}.d.ts`), dtsContent);
 
       const exportPath = path.join('icons', relativePath, pascalCaseName);
