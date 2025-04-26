@@ -44,6 +44,8 @@ npm install --save-dev @svgr/webpack
 ```
 
 ### Attributes
+All props are optional:
+
 
 | Name     | Type | Description |
 |:---------|:-----|:------------|
@@ -77,8 +79,6 @@ export default function Example() {
   );
 }
 
-```
-```jsx
 ```
 ---
 Enjoy using `icons` in your project! 🌐🌟
