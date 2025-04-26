@@ -8,14 +8,14 @@ We use optimized SVGs with optional `colors[]` and `colorsByHex{}` support, so t
 
 install
 ```bash
-npm i @crtcloud/icons
+npm i @crtcloudnet/icons
 ```
 
 To use this library in a Next.js app, add the following to your `next.config.js`:
 
 ```js
 
-  transpilePackages: ['@crtcloud/icons'], // Explicitly transpile this package
+  transpilePackages: ['@crtcloudnet/icons'], // Explicitly transpile this package
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -49,7 +49,7 @@ npm install --save-dev @svgr/webpack
 Example usage:
 
 ```jsx
-import { EC2, S3 } from '@crtcloud/icons';
+import { EC2, S3 } from '@crtcloudnet/icons';
 
 export default function Example() {
   return (
