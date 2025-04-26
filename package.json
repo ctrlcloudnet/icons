@@ -1,6 +1,6 @@
 {
-  "name": "icons",
-  "version": "1.0.0",
+  "name": "@crtcloud/icons",
+  "version": "1.0.0-beta.0",
   "sideEffects": false,
   "description": "The set of icons from CtrlCloud for DevOps projects",
   "type": "module",
