@@ -1,0 +1,15 @@
+src/
+.github/
+.husky/
+.eslintrc.js
+.prettierrc
+tsconfig.json
+build-icons.ts
+*.config.js
+.gitignore
+.git/
+.env
+.env.*
+.vscode/
+*.tsx
+*.map
